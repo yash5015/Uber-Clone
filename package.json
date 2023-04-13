@@ -12,6 +12,7 @@
     "@ant-design/icons": "^5.0.1",
     "@geoapify/geocoder-autocomplete": "^1.5.1",
     "@geoapify/react-geocoder-autocomplete": "^1.5.0",
+    "@googlemaps/js-api-loader": "^1.15.1",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
     "@reduxjs/toolkit": "^1.9.3",

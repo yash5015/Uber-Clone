@@ -66,7 +66,7 @@ const RideOptionsCard = () => {
           <Icon name="chevron-left" type="fontawesome"></Icon>
         </TouchableOpacity>
         <Text style={tw`text-center  text-xl`}>
-          {`Select a Ride - ${travelTimeInformation.distance}`}
+          {`Select a Ride - ${travelTimeInformation?.distance}`}
         </Text>
       </View>
       {/* <ScrollView>

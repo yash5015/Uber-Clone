@@ -1,4 +1,6 @@
 import {
+  Alert,
+  Modal,
   Pressable,
   StyleSheet,
   Text,
@@ -11,8 +13,11 @@ import React, { useState } from "react";
 import tw from "twrnc";
 import { Icon } from "@rneui/themed";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { setDestination } from "../slices/navSlice";
-import { useDispatch } from "react-redux";
+import {
+  selectTravelTimeInformation,
+  setDestination,
+} from "../slices/navSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import NavFavourites from "./NavFavourites";
 // import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
@@ -23,6 +28,7 @@ const NavigateCard = () => {
   const [searchTimer, setSearchTimer] = useState(null);
   const [Places, setPlaces] = useState(null);
   const navigation = useNavigation();
+  const travelTimeInformation = useSelector(selectTravelTimeInformation);
   async function fetchPlaces(text) {
     const res = await fetch(
       `https://api.geoapify.com/v1/geocode/autocomplete?text=${text}&type=city&format=json&apiKey=${GEO_API_KEY}`
@@ -130,7 +136,11 @@ const NavigateCard = () => {
         <TouchableOpacity
           style={tw`flex flex-row justify-between bg-black w-24 px-4 py-3 rounded-full`}
           onPress={() => {
-            navigation.navigate("RideOptionsCard");
+            {
+              travelTimeInformation
+                ? navigation.navigate("RideOptionsCard")
+                : Alert.alert("Choose Your Destination First");
+            }
           }}
         >
           <Icon name="car" type="font-awesome" color="white" size={16}></Icon>

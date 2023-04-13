@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-import MapView, { Geojson, Marker } from "react-native-maps";
+import MapView, { Geojson, Marker, Polyline } from "react-native-maps";
 
 import tw from "twrnc";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -12,7 +12,8 @@ import {
   setTravelTimeInformation,
 } from "../slices/navSlice";
 import ShowMap from "./ShowMap";
-import { GEO_API_KEY } from "@env";
+import { GEO_API_KEY, GOOGLE_MAPS_APIKEY } from "@env";
+import MapViewDirections from "react-native-maps-directions";
 // import MapViewDirections from "react-native-maps-directions";
 
 const Map = () => {
@@ -24,19 +25,20 @@ const Map = () => {
 
   // for origin to distance map changes
 
-  // useEffect(() => {
-  //   if (!origin || !destination) return;
+  useEffect(() => {
+    if (!origin || !destination) return;
 
-  //   // Zoom and fit to markers
-  //   mapRef.current.fitToSuppliedMarkers(["origin", "destination"], {
-  //     edgePaddding: {
-  //       top: 50,
-  //       right: 50,
-  //       bottom: 50,
-  //       left: 50,
-  //     },
-  //   });
-  // }, [origin, destination]);
+    // Zoom and fit to markers
+    mapRef?.current?.fitToSuppliedMarkers(["origin", "destination"], {
+      edgePadding: {
+        top: 100,
+        right: 100,
+        left: 100,
+        bottom: 100,
+        aimated: true,
+      },
+    });
+  }, [origin, destination]);
 
   // for calculating the disctance and time
   const toHoursAndMinutes = (totalSeconds) => {
@@ -91,28 +93,28 @@ const Map = () => {
     getTravelTime();
   }, [origin, destination]); //, GOOGLE_MAP_APIKEY
 
-  const OriginAndDest = (originPts, destinationPts) => {
-    fetch(
-      `https://api.geoapify.com/v1/routing?waypoints=${origin.location.lat},${origin.location.lng}|${destination.location.lat},${destination.location.lng}&mode=drive&apiKey=${GEO_API_KEY}`
-    )
-      .then((response) => response.json())
-      .then((result) => console.log(result))
-      .catch((error) => console.log("error", error));
+  // const OriginAndDest = (originPts, destinationPts) => {
+  //   fetch(
+  //     `https://api.geoapify.com/v1/routing?waypoints=${origin.location.lat},${origin.location.lng}|${destination.location.lat},${destination.location.lng}&mode=drive&apiKey=${GEO_API_KEY}`
+  //   )
+  //     .then((response) => response.json())
+  //     .then((result) => console.log(result))
+  //     .catch((error) => console.log("error", error));
+  // };
+
+  console.log("origin", origin.location);
+  const originPt = () => {
+    const dict = origin.location;
+    let originlong = dict.lng;
+    let originlat = dict.lat;
+    return { latitude: originlat, longitude: originlong };
   };
-  const myPlace = {
-    type: "FeatureCollection",
-    features: [
-      {
-        type: "Feature",
-        properties: {},
-        geometry: {
-          type: "Point",
-          coordinates: [64.165329, 48.844287],
-        },
-      },
-    ],
+  const destPt = () => {
+    const dict = destination.location;
+    let dictlong = dict.lng;
+    let dictlat = dict.lat;
+    return { latitude: dictlat, longitude: dictlong };
   };
-  console.log("origin", origin);
   return (
     <SafeAreaView>
       <View>
@@ -130,15 +132,17 @@ const Map = () => {
         >
           {/* Direction API */}
 
-          {/* {origin && destination && (
+          {origin && destination && (
             <MapViewDirections
-              origin={origin.description}
-              destination={destination.description}
-              apikey="AIzaSyB2MME6cwo7Jft36nKyxKI50qwZKItoxGE"
+              origin={{ latitude: 37.3318456, longitude: -122.0296002 }}
+              destination={{ latitude: 37.771707, longitude: -122.4053769 }}
+              // origin={originPt}
+              // destination={destPt}
+              apikey={GOOGLE_MAPS_APIKEY}
               strokeWidth={3}
               strokeColor="black"
             />
-          )} */}
+          )}
 
           {origin?.location && (
             <Marker
