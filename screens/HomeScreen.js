@@ -14,14 +14,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import { setDestination, setOrigin } from "../slices/navSlice";
 import NavFavourites from "../components/NavFavourites";
-
+import { GEO_API_KEY } from "@env";
 const HomeScreen = ({ navigation }) => {
   const [searchPlace, setSearchPlace] = useState("");
   const [searchTimer, setSearchTimer] = useState(null);
   const [Places, setPlaces] = useState(null);
   async function fetchPlaces(text) {
     const res = await fetch(
-      `https://api.geoapify.com/v1/geocode/autocomplete?text=${text}&type=city&format=json&apiKey=729482b3dd0045faa793f2cf4094f884`
+      `https://api.geoapify.com/v1/geocode/autocomplete?text=${text}&type=city&format=json&apiKey=${GEO_API_KEY}`
     );
     res
       .json()

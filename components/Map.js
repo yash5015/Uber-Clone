@@ -12,6 +12,7 @@ import {
   setTravelTimeInformation,
 } from "../slices/navSlice";
 import ShowMap from "./ShowMap";
+import { GEO_API_KEY } from "@env";
 // import MapViewDirections from "react-native-maps-directions";
 
 const Map = () => {
@@ -66,16 +67,13 @@ const Map = () => {
           { location: [destination.location.lng, destination.location.lat] },
         ],
       };
-      fetch(
-        "https://api.geoapify.com/v1/routematrix?apiKey=729482b3dd0045faa793f2cf4094f884",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        }
-      )
+      fetch(`https://api.geoapify.com/v1/routematrix?apiKey=${GEO_API_KEY}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      })
         .then((res) => res.json())
         .then((res) => {
           console.log(res.sources_to_targets[0][1].distance * 0.001);
@@ -95,7 +93,7 @@ const Map = () => {
 
   const OriginAndDest = (originPts, destinationPts) => {
     fetch(
-      `https://api.geoapify.com/v1/routing?waypoints=${origin.location.lat},${origin.location.lng}|${destination.location.lat},${destination.location.lng}&mode=drive&apiKey=729482b3dd0045faa793f2cf4094f884`
+      `https://api.geoapify.com/v1/routing?waypoints=${origin.location.lat},${origin.location.lng}|${destination.location.lat},${destination.location.lng}&mode=drive&apiKey=${GEO_API_KEY}`
     )
       .then((response) => response.json())
       .then((result) => console.log(result))
@@ -148,9 +146,6 @@ const Map = () => {
                 latitude: origin.location.lat,
                 longitude: origin.location.lng,
               }}
-              // image={{
-              //   uri: "https://links.papareact.com/3pn",
-              // }}
               title="Origin"
               pinColor="black"
               description={origin.description}

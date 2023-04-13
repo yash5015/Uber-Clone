@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import NavFavourites from "./NavFavourites";
 // import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-// import { GOOGLE_MAPS_APIKEY } from "@env";
+import { GEO_API_KEY } from "@env";
 const NavigateCard = () => {
   const dispatch = useDispatch();
   const [searchPlace, setSearchPlace] = useState("");
@@ -25,7 +25,7 @@ const NavigateCard = () => {
   const navigation = useNavigation();
   async function fetchPlaces(text) {
     const res = await fetch(
-      `https://api.geoapify.com/v1/geocode/autocomplete?text=${text}&type=city&format=json&apiKey=729482b3dd0045faa793f2cf4094f884`
+      `https://api.geoapify.com/v1/geocode/autocomplete?text=${text}&type=city&format=json&apiKey=${GEO_API_KEY}`
     );
     res
       .json()
