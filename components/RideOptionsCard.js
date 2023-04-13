@@ -47,12 +47,12 @@ const RideOptionsCard = () => {
   const [selected, setSelected] = useState(null);
   const SURGE_CHARGE_RATE = 1.5;
   console.log("destination", destination);
-  const priceHandle = (multiplier) => {
+  const priceHandle = (time, multiplier) => {
     let num = "";
-    for (const c of travelTimeInformation.time) {
+    for (const c of time) {
       if (c >= "0" && c <= "9") num += c;
     }
-    return Math.round(parseInt(num) * SURGE_CHARGE_RATE * multiplier) / 100;
+    return Math.round(parseInt(num) * SURGE_CHARGE_RATE * multiplier) / 10;
   };
   return (
     <SafeAreaView style={tw`bg-white flex-grow`}>
@@ -96,7 +96,12 @@ const RideOptionsCard = () => {
 
               <Text>{travelTimeInformation?.time} Travel Time</Text>
             </View>
-            <Text style={tw`text-xl`}>₹{priceHandle(multiplier)}</Text>
+
+            {travelTimeInformation ? (
+              <Text style={tw`text-xl`}>
+                ₹{priceHandle(travelTimeInformation?.time, multiplier)}
+              </Text>
+            ) : null}
           </TouchableOpacity>
         )}
       ></FlatList>
